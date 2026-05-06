@@ -1,14 +1,17 @@
 {
   "cleanUrls": true,
-  "trailingSlash": false,
   "rewrites": [
     {
       "source": "/api/chat",
       "destination": "api/main.py"
     },
     {
+      "source": "/",
+      "destination": "/dist/index.html"
+    },
+    {
       "source": "/(.*)",
-      "destination": "/$1"
+      "destination": "/dist/$1"
     }
   ]
 }
