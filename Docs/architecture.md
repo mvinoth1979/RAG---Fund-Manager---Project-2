@@ -269,12 +269,13 @@ When the scheduler is invoked (Cron or Manual), it executes a sequential pipelin
 
 ### Phase 7: UI & Frontend Development
 
-#### 7.1 Design Philosophy & Application Setup
+#### 7.1 Design Philosophy & Deployment Setup
 | Input | API responses from backend |
 | Output | Interactive web interface |
 | Technology Stack | React 18 + TypeScript + Tailwind CSS + Vite |
+| Location | **Project Root** (Migrated for Vercel Zero-Config compliance) |
 | Design Principles | Minimal, trust-first, accessible, mobile-first, stateless |
-| Sub-phases | Vite setup → TypeScript config → Tailwind CSS → Component structure |
+| Sub-phases | Root-level Vite setup → TypeScript config → Tailwind CSS → Component structure |
 | Enforcement | Single-page application (SPA) with no navigation menus |
 
 #### 7.2 Component Architecture
