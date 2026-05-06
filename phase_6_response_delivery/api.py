@@ -73,61 +73,67 @@ async def root():
 
 @app.post("/api/chat", response_model=ChatResponse)
 async def chat_endpoint(request: QueryRequest):
-    query = request.query
-    logger.info(f"Received query: {query}")
+    try:
+        query = request.query
+        logger.info(f"Received query: {query}")
 
-    # Phase 1: Query Sanitization & Classification
-    p1_result = run_phase_1(query)
-    logger.info(f"Phase 1 result: {p1_result}")
+        # Phase 1: Query Sanitization & Classification
+        p1_result = run_phase_1(query)
+        logger.info(f"Phase 1 result: {p1_result}")
 
-    if p1_result["blocked_by_pii"] or p1_result["terminal_response"]:
-        res = p1_result["terminal_response"]
-        return ChatResponse(
-            text=res["text"],
-            source_url=res["source_url"],
-            footer_date=res["footer_date"],
-            terminal_state=res["terminal_state"]
+        if p1_result["blocked_by_pii"] or p1_result["terminal_response"]:
+            res = p1_result["terminal_response"]
+            return ChatResponse(
+                text=res["text"],
+                source_url=res["source_url"],
+                footer_date=res["footer_date"],
+                terminal_state=res["terminal_state"]
+            )
+
+        # Phase 2: Corpus Retrieval
+        p2_result = run_phase_2(p1_result["sanitized_query"])
+        if not p2_result.filtered_candidates:
+            today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+            return ChatResponse(
+                text="I do not have that information in my current sources.",
+                source_url=None,
+                footer_date=today,
+                terminal_state="T3"
+            )
+
+        # Phase 3: Context Assembly
+        context_string, source_url, doc_id = context_pipeline.execute(p2_result.filtered_candidates)
+        if not context_string:
+            today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+            return ChatResponse(
+                text="I do not have that information in my current sources.",
+                source_url=None,
+                footer_date=today,
+                terminal_state="T3"
+            )
+
+        # Phase 4: Response Generation
+        p4_result = generation_pipeline.generate_response(context_string, p1_result["sanitized_query"])
+        
+        # Phase 5: Compliance Check
+        p5_result = compliance_pipeline.validate(
+            raw_response=p4_result.text,
+            source_context=context_string,
+            source_url=source_url
         )
 
-    # Phase 2: Corpus Retrieval
-    p2_result = run_phase_2(p1_result["sanitized_query"])
-    if not p2_result.filtered_candidates:
         today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
         return ChatResponse(
-            text="I do not have that information in my current sources.",
-            source_url=None,
+            text=p5_result.response,
+            source_url=source_url,
             footer_date=today,
-            terminal_state="T3"
+            terminal_state=p5_result.status
         )
-
-    # Phase 3: Context Assembly
-    context_string, source_url, doc_id = context_pipeline.execute(p2_result.filtered_candidates)
-    if not context_string:
-        today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
-        return ChatResponse(
-            text="I do not have that information in my current sources.",
-            source_url=None,
-            footer_date=today,
-            terminal_state="T3"
-        )
-
-    # Phase 4: Response Generation
-    p4_result = generation_pipeline.generate_response(context_string, p1_result["sanitized_query"])
-    
-    # Phase 5: Compliance Check
-    p5_result = compliance_pipeline.validate(
-        raw_response=p4_result.text,
-        source_context=context_string,
-        source_url=source_url
-    )
-
-    today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
-    return ChatResponse(
-        text=p5_result.response,
-        source_url=source_url,
-        footer_date=today,
-        terminal_state=p5_result.status
-    )
+    except Exception as e:
+        import traceback
+        error_msg = f"API Error: {str(e)}"
+        logger.error(f"{error_msg}\n{traceback.format_exc()}")
+        raise HTTPException(status_code=500, detail=error_msg)
 
 if __name__ == "__main__":
     import uvicorn
