@@ -4,7 +4,6 @@ pydantic==2.13.3
 pydantic-settings
 python-dotenv
 chromadb
-sentence-transformers
 google-generativeai
 groq
 beautifulsoup4
@@ -14,3 +13,4 @@ numpy
 pandas
 jinja2
 python-multipart
+rank_bm25

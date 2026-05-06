@@ -11,12 +11,13 @@ import importlib.util
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(PROJECT_ROOT))
 
+# Dynamically import the new Gemini Embedder from Phase 0
 _EMBEDDER_PATH = PROJECT_ROOT / "phase_0_ingestion" / "0.5_embed_index" / "embedder.py"
 _embedder_spec = importlib.util.spec_from_file_location("embedder", _EMBEDDER_PATH)
 _embedder_mod = importlib.util.module_from_spec(_embedder_spec)
 _embedder_spec.loader.exec_module(_embedder_mod)
 
-BGEEmbedder = _embedder_mod.BGEEmbedder
+GeminiEmbedder = _embedder_mod.GeminiEmbedder
 EXPECTED_DIM = _embedder_mod.EXPECTED_DIM
 
 logger = logging.getLogger("phase_2_3_hybrid")
@@ -62,9 +63,11 @@ class HybridRetriever:
         tokenized_corpus = [self._tokenize(c["text"]) for c in self.chunks]
         self.bm25 = BM25Okapi(tokenized_corpus)
         self.sqlite_db = sqlite_db
-        self.embedder = BGEEmbedder()
+        
+        # Use Gemini Cloud Embedder (3072-dim)
+        self.embedder = GeminiEmbedder()
 
-        logger.info(f"Hybrid retriever ready. Chunks={len(self.chunks)} Chroma={self.collection.count()}")
+        logger.info(f"Hybrid retriever ready (Gemini {EXPECTED_DIM}-dim). Chunks={len(self.chunks)} Chroma={self.collection.count()}")
 
     @staticmethod
     def _load_chunks(chunks_dir: Path) -> List[Dict]:
@@ -82,8 +85,10 @@ class HybridRetriever:
         return re.findall(r"\b\w+\b", text.lower())
 
     def _dense_search(self, query: str, doc_ids: List[str]) -> List[Tuple[str, float]]:
+        # API call to Gemini for query embedding
         embedding = self.embedder.embed([query])[0]
-        embedding = BGEEmbedder.l2_normalize(embedding)
+        embedding = GeminiEmbedder.l2_normalize(embedding)
+        
         where_filter = {"doc_id": {"$in": doc_ids}} if doc_ids else None
         results = self.collection.query(
             query_embeddings=[embedding],
@@ -176,7 +181,7 @@ class HybridRetriever:
         return candidates
 
     def retrieve(self, normalized_query: str, mentioned_funds: List[str], fact_type: Optional[str], fact_confidence: float) -> List[RetrievalCandidate]:
-        logger.info(f"Query: {normalized_query[:80]}...")
+        logger.info(f"Retrieving for: {normalized_query[:80]}...")
         dense_results = self._dense_search(normalized_query, mentioned_funds)
         bm25_results, _ = self._bm25_search(normalized_query, mentioned_funds)
         structured_result = self._structured_lookup(mentioned_funds, fact_type, fact_confidence)

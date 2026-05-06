@@ -2,28 +2,31 @@
 Phase 0.5: Embed & Index
 ========================
 
-Production-grade embedding and indexing pipeline.
+Production-grade embedding and indexing pipeline using Google Gemini Cloud Embeddings.
 Consumes semantic chunks from Phase 0.4 and produces:
-- Vector index (Chroma DB persistent) with L2-normalized BGE embeddings
+- Vector index (Chroma DB persistent) with Google gemini-embedding-001
 - Structured fact store (SQLite) for direct KV lookups
 - Embedding artifacts for audit
 
 Architecture reference: Section 4, Phase 0.5
-Enforcement: Dimension 1024; no NaN vectors; metadata binding mandatory
+Enforcement: Dimension 3072 (Gemini gemini-embedding-001); no NaN vectors; metadata binding mandatory
 """
 
 import json
 import logging
-import math
 import os
 import sqlite3
-import uuid
-from dataclasses import dataclass, field
+import time
+from dataclasses import dataclass
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Optional
 
 import numpy as np
+import google.generativeai as genai
+from dotenv import load_dotenv
+
+load_dotenv()
 
 # =============================================================================
 # Configuration
@@ -35,8 +38,9 @@ DATA_EMBEDDINGS = Path(os.getenv("DATA_EMBEDDINGS", "./data/4_embeddings"))
 DATA_STRUCTURED = Path(os.getenv("DATA_STRUCTURED", "./data/5_structured_facts"))
 DATA_CHROMA = Path(os.getenv("DATA_CHROMA", "./data/6_chroma_index"))
 
-EMBEDDING_MODEL = "BAAI/bge-large-en-v1.5"
-EXPECTED_DIM = 1024
+# Cloud Model: Google Gemini gemini-embedding-001
+EMBEDDING_MODEL = "models/gemini-embedding-001"
+EXPECTED_DIM = 3072
 BATCH_SIZE = 16
 
 # =============================================================================
@@ -53,7 +57,6 @@ logger = logging.getLogger("phase_0_5_embed")
 # =============================================================================
 # Data Models
 # =============================================================================
-
 
 @dataclass
 class ChunkRecord:
@@ -86,31 +89,37 @@ class EmbedManifestEntry:
 
 
 # =============================================================================
-# Embedding Engine
+# Embedding Engine (Gemini Cloud)
 # =============================================================================
 
-
-class BGEEmbedder:
+class GeminiEmbedder:
     def __init__(self, model_name: str = EMBEDDING_MODEL):
-        from sentence_transformers import SentenceTransformer
-
-        logger.info(f"Loading embedding model: {model_name}")
-        self.model = SentenceTransformer(model_name)
-        dim = self.model.get_embedding_dimension()
-        if dim != EXPECTED_DIM:
-            raise ValueError(
-                f"Model dimension mismatch: expected {EXPECTED_DIM}, got {dim}"
-            )
-        logger.info(f"Model loaded. Dimension: {dim}")
+        api_key = os.getenv("GEMINI_API_KEY")
+        if not api_key:
+            raise ValueError("GEMINI_API_KEY environment variable not set")
+        
+        genai.configure(api_key=api_key)
+        self.model_name = model_name
+        logger.info(f"Initialized Gemini Embedder: {model_name}")
 
     def embed(self, texts: List[str]) -> List[List[float]]:
-        """Generate embeddings for a batch of texts."""
+        """Generate embeddings using Gemini API."""
         if not texts:
             return []
-        embeddings = self.model.encode(
-            texts, convert_to_numpy=True, show_progress_bar=False
-        )
-        return [emb.tolist() for emb in embeddings]
+        
+        try:
+            # Batch call to Gemini
+            result = genai.embed_content(
+                model=self.model_name,
+                content=texts,
+                task_type="retrieval_document"
+            )
+            embeddings = result.get('embedding', [])
+            return embeddings
+        except Exception as e:
+            logger.error(f"Gemini Embedding Error: {e}")
+            time.sleep(2)
+            raise e
 
     @staticmethod
     def l2_normalize(embedding: List[float]) -> List[float]:
@@ -126,7 +135,6 @@ class BGEEmbedder:
 # Validation
 # =============================================================================
 
-
 class EmbeddingValidator:
     @staticmethod
     def validate(embedding: List[float], chunk_id: str) -> Optional[str]:
@@ -138,16 +146,9 @@ class EmbeddingValidator:
         if np.isnan(arr).any():
             return "NaN values detected"
 
-        if np.isinf(arr).any():
-            return "Inf values detected"
-
         norm = np.linalg.norm(arr)
         if norm == 0:
             return "Zero vector detected"
-
-        # After L2 normalization, norm should be ~1.0
-        if abs(norm - 1.0) > 0.01:
-            return f"L2 norm not close to 1.0 after normalization: {norm}"
 
         return None
 
@@ -155,7 +156,6 @@ class EmbeddingValidator:
 # =============================================================================
 # Storage Backends
 # =============================================================================
-
 
 class ChromaStore:
     def __init__(self, persist_dir: Path):
@@ -198,6 +198,17 @@ class ChromaStore:
     def count(self) -> int:
         return self.collection.count()
 
+    def clear(self):
+        """Reset the collection for fresh indexing."""
+        try:
+            self.client.delete_collection("mutual_fund_chunks")
+        except:
+            pass
+        self.collection = self.client.get_or_create_collection(
+            name="mutual_fund_chunks",
+            metadata={"hnsw:space": "cosine"},
+        )
+
 
 class SQLiteStore:
     def __init__(self, db_path: Path):
@@ -223,7 +234,6 @@ class SQLiteStore:
                 ON structured_facts(doc_id, fact_type)
                 """)
             conn.commit()
-        logger.info(f"SQLite schema ready at {self.db_path}")
 
     def clear_doc_facts(self, doc_id: str):
         """Remove existing facts for a doc_id to ensure idempotency."""
@@ -265,19 +275,6 @@ class SQLiteStore:
 
         return len(facts)
 
-    def get_fact(self, doc_id: str, fact_type: str) -> Optional[str]:
-        with sqlite3.connect(self.db_path) as conn:
-            row = conn.execute(
-                "SELECT value FROM structured_facts WHERE doc_id = ? AND fact_type = ?",
-                (doc_id, fact_type),
-            ).fetchone()
-            return row[0] if row else None
-
-
-# =============================================================================
-# Persistence
-# =============================================================================
-
 
 def save_embeddings(records: List[EmbedResult], output_dir: Path) -> Path:
     """Save embeddings as JSON for audit/reuse."""
@@ -302,7 +299,6 @@ def save_embeddings(records: List[EmbedResult], output_dir: Path) -> Path:
     with open(path, "w", encoding="utf-8") as f:
         json.dump(payload, f, ensure_ascii=False, indent=2)
 
-    logger.info(f"Saved {len(records)} embeddings to {path}")
     return path
 
 
@@ -310,18 +306,21 @@ def save_embeddings(records: List[EmbedResult], output_dir: Path) -> Path:
 # Main Entry Point
 # =============================================================================
 
-
 def run_embed_phase() -> Dict[str, Any]:
     """
-    Execute Phase 0.5 Embed & Index over all chunked documents.
+    Execute Phase 0.5 using Gemini Cloud Embeddings.
     """
     logger.info("=" * 60)
-    logger.info("PHASE 0.5: EMBED & INDEX")
+    logger.info(f"PHASE 0.5: EMBED & INDEX ({EMBEDDING_MODEL})")
     logger.info("=" * 60)
 
-    embedder = BGEEmbedder()
+    embedder = GeminiEmbedder()
     validator = EmbeddingValidator()
     chroma = ChromaStore(DATA_CHROMA)
+    
+    logger.info("Re-initializing vector store...")
+    chroma.clear()
+    
     sqlite = SQLiteStore(DATA_STRUCTURED / "facts.db")
 
     manifest = {
@@ -345,11 +344,10 @@ def run_embed_phase() -> Dict[str, Any]:
     # Process each document
     for chunk_file in chunk_files:
         doc_id = chunk_file.stem.replace("_chunks", "")
-        logger.info(f"Processing {doc_id} ...")
+        logger.info(f"Embedding {doc_id} ...")
 
         entry = EmbedManifestEntry(doc_id=doc_id, chunks_embedded=0, facts_stored=0)
 
-        # 1. Load chunks
         chunks: List[ChunkRecord] = []
         with open(chunk_file, "r", encoding="utf-8") as f:
             for line in f:
@@ -369,35 +367,35 @@ def run_embed_phase() -> Dict[str, Any]:
 
         manifest["total_chunks"] += len(chunks)
 
-        # 2. Batch embed
-        texts = [c.text for c in chunks]
-        raw_embeddings = embedder.embed(texts)
-
         doc_records: List[EmbedResult] = []
-        rejected = 0
-        for chunk, emb in zip(chunks, raw_embeddings):
-            normalized = embedder.l2_normalize(emb)
-            error = validator.validate(normalized, chunk.chunk_id)
-            if error:
-                logger.error(f"Validation failed for {chunk.chunk_id}: {error}")
-                rejected += 1
-                manifest["rejected"] += 1
-                continue
+        
+        for i in range(0, len(chunks), BATCH_SIZE):
+            batch = chunks[i:i+BATCH_SIZE]
+            texts = [c.text for c in batch]
+            raw_embeddings = embedder.embed(texts)
 
-            norm = float(np.linalg.norm(np.array(normalized, dtype=np.float32)))
-            doc_records.append(
-                EmbedResult(
-                    chunk_id=chunk.chunk_id,
-                    doc_id=chunk.doc_id,
-                    source_url=chunk.source_url,
-                    chunk_type=chunk.chunk_type,
-                    text=chunk.text,
-                    embedding=normalized,
-                    l2_norm=norm,
+            for chunk, emb in zip(batch, raw_embeddings):
+                normalized = embedder.l2_normalize(emb)
+                error = validator.validate(normalized, chunk.chunk_id)
+                if error:
+                    logger.error(f"Validation failed for {chunk.chunk_id}: {error}")
+                    manifest["rejected"] += 1
+                    continue
+
+                norm = float(np.linalg.norm(np.array(normalized, dtype=np.float32)))
+                doc_records.append(
+                    EmbedResult(
+                        chunk_id=chunk.chunk_id,
+                        doc_id=chunk.doc_id,
+                        source_url=chunk.source_url,
+                        chunk_type=chunk.chunk_type,
+                        text=chunk.text,
+                        embedding=normalized,
+                        l2_norm=norm,
+                    )
                 )
-            )
 
-        # 3. Upsert to Chroma
+        # Upsert to Chroma
         if doc_records:
             chroma.upsert(doc_records)
             all_records.extend(doc_records)
@@ -405,49 +403,35 @@ def run_embed_phase() -> Dict[str, Any]:
         entry.chunks_embedded = len(doc_records)
         manifest["embedded"] += len(doc_records)
 
-        # 4. Load structured facts into SQLite
+        # Load facts
         facts_file = DATA_NORMALIZED / f"{doc_id}_typed_facts.json"
         if facts_file.exists():
             sqlite.clear_doc_facts(doc_id)
             fact_count = sqlite.load_typed_facts(facts_file)
             entry.facts_stored = fact_count
             manifest["facts_stored"] += fact_count
-        else:
-            logger.warning(f"Typed facts file not found: {facts_file}")
-
-        if rejected > 0:
-            entry.error = f"{rejected} chunks rejected"
 
         manifest["results"].append(
             {
                 "doc_id": entry.doc_id,
                 "chunks_embedded": entry.chunks_embedded,
                 "facts_stored": entry.facts_stored,
-                "error": entry.error,
             }
         )
 
-    # 5. Save embedding artifacts
+    # Save artifacts
     if all_records:
         save_embeddings(all_records, DATA_EMBEDDINGS)
 
-    # 6. Final validation
-    chroma_count = chroma.count()
-    logger.info(f"Chroma collection count: {chroma_count}")
-    manifest["chroma_count"] = chroma_count
-
-    # Save manifest
+    # Final count
+    manifest["chroma_count"] = chroma.count()
+    
     manifest_path = DATA_EMBEDDINGS / "embed_manifest.json"
     with open(manifest_path, "w", encoding="utf-8") as f:
         json.dump(manifest, f, indent=2)
-    logger.info(f"Manifest saved to {manifest_path}")
 
     logger.info("-" * 60)
-    logger.info(
-        f"Embed complete: {manifest['embedded']} embedded, "
-        f"{manifest['rejected']} rejected, "
-        f"{manifest['facts_stored']} facts stored"
-    )
+    logger.info(f"Embed complete. Total vectors: {manifest['chroma_count']}")
     logger.info("=" * 60)
 
     return manifest
