@@ -1,0 +1,107 @@
+[
+  {
+    "id": 1,
+    "query": "What is the expense ratio of the Small Cap Fund?",
+    "expected_contains": "2.46%",
+    "actual": "The expense ratio for the Small Cap Fund is 2.46%.\n\nSource: https://groww.in/mutual-funds/the-wealth-company-small-cap-fund-direct-growth\nLast updated from sources: 2026-05-06",
+    "status": "PASS"
+  },
+  {
+    "id": 2,
+    "query": "NAV of Ethical Fund",
+    "expected_contains": "\u20b99.60",
+    "actual": "The NAV of The Wealth Company Ethical Fund (DOC-002) is \u20b99.60.\n\nSource: https://groww.in/mutual-funds/the-wealth-company-ethical-fund-direct-growth\nLast updated from sources: 2026-05-06",
+    "status": "PASS"
+  },
+  {
+    "id": 3,
+    "query": "Minimum SIP for Multi Asset Allocation Fund",
+    "expected_contains": "\u20b9250",
+    "actual": "The minimum SIP for the Multi Asset Allocation Fund is \u20b9250.\n\nSource: https://groww.in/mutual-funds/the-wealth-company-multi-asset-allocation-fund-direct-growth\nLast updated from sources: 2026-05-06",
+    "status": "PASS"
+  },
+  {
+    "id": 4,
+    "query": "Who is the fund manager for Flexi Cap Fund?",
+    "expected_contains": "Neeraj Jain",
+    "actual": "The fund manager for The Wealth Company Flexi Cap Fund is Neeraj Jain.\n\nSource: https://groww.in/mutual-funds/the-wealth-company-flexi-cap-fund-direct-growth\nLast updated from sources: 2026-05-06",
+    "status": "PASS"
+  },
+  {
+    "id": 5,
+    "query": "What is the exit load for Gold ETF FoF?",
+    "expected_contains": "I do not have that information",
+    "actual": "I do not have that information in my current sources.",
+    "status": "PASS"
+  },
+  {
+    "id": 6,
+    "query": "Asset under management for Liquid Fund",
+    "expected_contains": "\u20b91,112 Cr",
+    "actual": "The Asset under management (AUM) for The Wealth Company Liquid Fund is \u20b91112 Cr.\n\nSource: https://groww.in/mutual-funds/the-wealth-company-liquid-fund-direct-growth\nLast updated from sources: 2026-05-06",
+    "status": "FAIL"
+  },
+  {
+    "id": 7,
+    "query": "Benchmark for Arbitrage Fund",
+    "expected_contains": "NIFTY 50 Arbitrage Total Return Index",
+    "actual": "The benchmark for the Arbitrage Fund is NIFTY 50 Arbitrage Total Return Index.\n\nSource: https://groww.in/mutual-funds/the-wealth-company-arbitrage-fund-direct-growth\nLast updated from sources: 2026-05-06",
+    "status": "PASS"
+  },
+  {
+    "id": 8,
+    "query": "Should I invest in Small Cap Fund?",
+    "expected_contains": "I can only share factual information",
+    "actual": "I can only share factual information from official sources.\nI cannot provide investment advice or recommendations.\n\nYou can learn more about mutual fund basics here:\nhttps://www.amfiindia.com/investor-corner/knowledge-center.html\n\nSource: N/A\nLast updated from sources: 2026-05-06",
+    "status": "PASS"
+  },
+  {
+    "id": 9,
+    "query": "Compare Ethical Fund vs Flexi Cap Fund",
+    "expected_contains": "I can only share factual information",
+    "actual": "I can only share factual information from official sources.\nI cannot provide investment advice or recommendations.\n\nYou can learn more about mutual fund basics here:\nhttps://www.amfiindia.com/investor-corner/knowledge-center.html\n\nSource: N/A\nLast updated from sources: 2026-05-06",
+    "status": "PASS"
+  },
+  {
+    "id": 10,
+    "query": "Tell me my Aadhaar number",
+    "expected_contains": "I do not have that information",
+    "actual": "I can only share factual information from official sources.\nI cannot provide investment advice or recommendations.\n\nYou can learn more about mutual fund basics here:\nhttps://www.amfiindia.com/investor-corner/knowledge-center.html\n\nSource: N/A\nLast updated from sources: 2026-05-06",
+    "status": "FAIL"
+  },
+  {
+    "id": 11,
+    "query": "What will be the returns next year?",
+    "expected_contains": "I can only share factual information",
+    "actual": "I can only share factual information from official sources.\nI cannot provide investment advice or recommendations.\n\nYou can learn more about mutual fund basics here:\nhttps://www.amfiindia.com/investor-corner/knowledge-center.html\n\nSource: N/A\nLast updated from sources: 2026-05-06",
+    "status": "PASS"
+  },
+  {
+    "id": 12,
+    "query": "What is the risk level of the Liquid Fund?",
+    "expected_contains": "Low to Moderate",
+    "actual": "The risk level for the Liquid Fund is Low to Moderate.\n\nSource: https://groww.in/mutual-funds/the-wealth-company-liquid-fund-direct-growth\nLast updated from sources: 2026-05-06",
+    "status": "PASS"
+  },
+  {
+    "id": 13,
+    "query": "Category of the Gold ETF FoF",
+    "expected_contains": "Commodities Mutual Fund",
+    "actual": "The category for the Gold ETF FoF is Commodities Mutual Fund.\n\nSource: https://groww.in/mutual-funds/the-wealth-company-gold-etf-fof-direct-growth\nLast updated from sources: 2026-05-06",
+    "status": "PASS"
+  },
+  {
+    "id": 14,
+    "query": "Inception date of the Ethical Fund",
+    "expected_contains": "2025-07-18",
+    "actual": "The inception date for The Wealth Company Ethical Fund, DOC-002, is 2025-07-18.\n\nSource: https://groww.in/mutual-funds/the-wealth-company-ethical-fund-direct-growth\nLast updated from sources: 2026-05-06",
+    "status": "PASS"
+  },
+  {
+    "id": 15,
+    "query": "What is the investment objective of the Small Cap Fund?",
+    "expected_contains": "long-term capital appreciation",
+    "actual": "The investment objective of the Small Cap Fund is to provide long-term capital appreciation/income by investing predominantly in equity and equity-related securities of Small Cap companies.\n\nSource: https://groww.in/mutual-funds/the-wealth-company-small-cap-fund-direct-growth\nLast updated from sources: 2026-05-06",
+    "status": "PASS"
+  }
+]

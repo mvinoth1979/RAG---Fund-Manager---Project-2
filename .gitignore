@@ -1,29 +1,26 @@
-# Python
-__pycache__/
-*.py[cod]
-*$py.class
-.venv/
-venv/
-ENV/
-env/
-.env
-
-# Database/Storage (Allowed for production bundle)
-# data/ is now allowed
-chroma_db/
-# facts.db is now allowed
-# *.sqlite3
-# *.jsonl
-
-# IDEs
-.vscode/
-.idea/
-
-# OS
-.DS_Store
-Thumbs.db
-
-# Project Specific
-scratch/
-debug_*.txt
+# Logs
+logs
 *.log
+npm-debug.log*
+
+# Node
+node_modules
+dist
+dist-ssr
+
+# Environment
+.env
+.env.local
+*.local
+
+# Editor
+.vscode
+.idea
+*.suo
+*.sw?
+
+# Python
+__pycache__
+*.pyc
+.venv
+venv

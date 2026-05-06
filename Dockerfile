@@ -1,19 +1,20 @@
-FROM python:3.11-slim
+# Build stage
+FROM node:18-alpine AS build
 
 WORKDIR /app
 
-# Install system dependencies (build-essential for chromadb/hnswlib if needed)
-RUN apt-get update && apt-get install -y build-essential && rm -rf /var/lib/apt/lists/*
-
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+COPY package*.json ./
+RUN npm install
 
 COPY . .
+RUN npm run build
 
-# Environment variables will be supplied via docker-compose
-ENV HOST=0.0.0.0
-ENV PORT=8000
+# Production stage
+FROM nginx:alpine
 
-EXPOSE 8000
+COPY --from=build /app/dist /usr/share/nginx/html
 
-CMD ["uvicorn", "phase_6_response_delivery.api:app", "--host", "0.0.0.0", "--port", "8000"]
+# Copy custom nginx config if necessary, or just use default
+EXPOSE 80
+
+CMD ["nginx", "-g", "daemon off;"]
