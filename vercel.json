@@ -11,7 +11,7 @@
     },
     {
       "source": "/(.*)",
-      "destination": "/phase_7_frontend/$1"
+      "destination": "/phase_7_frontend/dist/$1"
     }
   ],
   "headers": [

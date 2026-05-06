@@ -1,0 +1,8 @@
+{
+  "name": "mutual-fund-rag-root",
+  "version": "1.0.0",
+  "scripts": {
+    "build": "cd phase_7_frontend && npm install && npm run build",
+    "install": "cd phase_7_frontend && npm install"
+  }
+}
