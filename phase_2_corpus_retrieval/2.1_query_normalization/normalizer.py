@@ -100,28 +100,37 @@ class QueryNormalizer:
 
         client = LLMClient()
         
-        # Schema awareness lists
-        funds = ["Small Cap Fund", "Ethical Fund", "Multi Asset Allocation Fund", "Flexi Cap Fund", "Gold ETF FOF", "Liquid Fund", "Arbitrage Fund"]
-        facts = ["NAV (Net Asset Value)", "AUM (Assets Under Management)", "Expense Ratio (Charges/Fees)", "Exit Load", "Min SIP", "Min Lumpsum", "Benchmark", "Riskometer (Risk Level)", "Fund Manager", "Inception Date (Launch Date)"]
+        # Deep Schema Dictionary for high-precision correction
+        schema_context = {
+            "SIP": ["Systematic Investment Plan", "syp", "sysmatic", "systemic", "sip amount", "monthly investment"],
+            "NAV": ["Net Asset Value", "nva", "nsv", "unit price", "current price", "nav value"],
+            "AUM": ["Assets Under Management", "fund size", "total assets", "aum size", "how big is the fund"],
+            "Expense Ratio": ["charges", "fees", "cost of fund", "expnse", "management fee", "ter"],
+            "Exit Load": ["penalty", "redemption charges", "exit fee", "ext lode", "lock in penalty"],
+            "Benchmark": ["index", "comparison index", "bnchmark", "standard"],
+            "Fund Manager": ["who manages", "manager name", "portfolio manager", "mngr"],
+            "Inception Date": ["launch date", "start date", "started on", "age of fund"]
+        }
 
         system_prompt = (
-            "You are a high-precision typo correction engine for a Mutual Fund FAQ system.\n"
-            "Your goal is to repair user queries containing misspellings, letter transpositions, or ambiguous abbreviations.\n\n"
-            "--- VALID SCHEMA ---\n"
-            f"SUPPORTED FUNDS: {', '.join(funds)}\n"
-            f"SUPPORTED FACTS: {', '.join(facts)}\n\n"
-            "--- CORRECTION RULES ---\n"
-            "1. Fix letter transpositions (e.g., 'NVA' -> 'NAV', 'NSV' -> 'NAV').\n"
-            "2. Fix phonetic misspellings (e.g., 'Smal' -> 'Small', 'Flexicp' -> 'Flexi Cap').\n"
-            "3. Map synonyms to canonical terms (e.g., 'cost' -> 'expense ratio', 'started on' -> 'inception date').\n"
-            "4. Preserve the overall intent of the question.\n"
-            "5. If no correction is needed, return the original query exactly.\n"
-            "6. Respond ONLY with the corrected query string. No preamble, no explanation.\n\n"
+            "You are a sophisticated financial query repair engine. Your mission is to normalize user queries about Mutual Funds.\n\n"
+            "--- CORRECTION STRATEGY ---\n"
+            "1. **SIP Repair**: Correct 'syp', 'sysmatic', or 'systemic' to 'SIP'.\n"
+            "2. **NAV/AUM Repair**: Correct 'nva', 'nsv' to 'NAV' and 'assets' to 'AUM' if context implies fund size.\n"
+            "3. **Scheme Alignment**: Map partial or misspelled names to: 'Small Cap Fund', 'Ethical Fund', 'Multi Asset Allocation Fund', 'Flexi Cap Fund', 'Gold ETF FOF', 'Liquid Fund', 'Arbitrage Fund'.\n"
+            "4. **Attribute Normalization**: Map 'charges/fees' to 'Expense Ratio', 'penalty' to 'Exit Load', and 'who runs' to 'Fund Manager'.\n"
+            "5. **Hinglish/Informal**: Handle informal phrasing like 'kitna hai' or 'details' by focusing on the core fact requested.\n\n"
             "--- EXAMPLES ---\n"
-            "Input: 'What is the nva of smal cap?' -> Output: 'What is the NAV of Small Cap Fund?'\n"
-            "Input: 'expnse for flexicp' -> Output: 'expense ratio for Flexi Cap Fund'\n"
-            "Input: 'min sip for liquid' -> Output: 'min SIP for Liquid Fund'\n"
-            "Input: 'Who is the manager for ethical?' -> Output: 'Who is the fund manager for Ethical Fund?'"
+            "Input: 'min syp for flexicp' -> Output: 'minimum SIP for Flexi Cap Fund'\n"
+            "Input: 'nva of ethical' -> Output: 'NAV of Ethical Fund'\n"
+            "Input: 'fund size of multi asset' -> Output: 'AUM of Multi Asset Allocation Fund'\n"
+            "Input: 'ext lode for liquid' -> Output: 'exit load for Liquid Fund'\n"
+            "Input: 'who manages smal cap' -> Output: 'fund manager for Small Cap Fund'\n"
+            "Input: 'sysmatic plan details' -> Output: 'SIP details'\n\n"
+            "--- RULES ---\n"
+            "- Return ONLY the corrected query string.\n"
+            "- No preamble, no conversational filler.\n"
+            "- If the query is already perfect, return it unchanged."
         )
         
         try:
