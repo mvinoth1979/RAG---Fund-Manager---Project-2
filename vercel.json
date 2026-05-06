@@ -1,17 +1,25 @@
 {
-  "cleanUrls": true,
+  "builds": [
+    {
+      "src": "api/main.py",
+      "use": "@vercel/python"
+    },
+    {
+      "src": "package.json",
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "dist"
+      }
+    }
+  ],
   "rewrites": [
     {
       "source": "/api/chat",
       "destination": "api/main.py"
     },
     {
-      "source": "/",
-      "destination": "/dist/index.html"
-    },
-    {
       "source": "/(.*)",
-      "destination": "/dist/$1"
+      "destination": "/$1"
     }
   ]
 }
