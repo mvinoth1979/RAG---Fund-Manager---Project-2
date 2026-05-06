@@ -65,6 +65,7 @@ compliance_pipeline = CompliancePipeline(banned_phrases_path=banned_phrases_path
 
 # Root route removed to prevent conflict with React frontend
 
+# Force the chat endpoint to a specific route
 @app.post("/api/chat", response_model=ChatResponse)
 async def chat_endpoint(request: QueryRequest):
     try:
