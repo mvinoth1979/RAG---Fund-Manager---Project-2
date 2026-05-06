@@ -1,16 +1,16 @@
 {
-  "rewrites": [
+  "routes": [
     {
-      "source": "/api/chat",
-      "destination": "api/main.py"
+      "src": "/api/chat",
+      "dest": "backend/main.py"
     },
     {
-      "source": "/",
-      "destination": "/public/index.html"
+      "src": "/",
+      "dest": "/public/index.html"
     },
     {
-      "source": "/(.*)",
-      "destination": "/public/$1"
+      "src": "/(.*)",
+      "dest": "/public/$1"
     }
   ]
 }
