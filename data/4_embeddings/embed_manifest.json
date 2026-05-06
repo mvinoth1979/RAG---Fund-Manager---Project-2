@@ -1,0 +1,47 @@
+{
+  "run_id": "2026-05-06T16:04:40.993207+00:00",
+  "model": "models/gemini-embedding-001",
+  "expected_dim": 3072,
+  "total_chunks": 28,
+  "embedded": 28,
+  "rejected": 0,
+  "facts_stored": 104,
+  "results": [
+    {
+      "doc_id": "DOC-001",
+      "chunks_embedded": 3,
+      "facts_stored": 15
+    },
+    {
+      "doc_id": "DOC-002",
+      "chunks_embedded": 3,
+      "facts_stored": 15
+    },
+    {
+      "doc_id": "DOC-003",
+      "chunks_embedded": 7,
+      "facts_stored": 15
+    },
+    {
+      "doc_id": "DOC-004",
+      "chunks_embedded": 4,
+      "facts_stored": 15
+    },
+    {
+      "doc_id": "DOC-005",
+      "chunks_embedded": 2,
+      "facts_stored": 14
+    },
+    {
+      "doc_id": "DOC-006",
+      "chunks_embedded": 5,
+      "facts_stored": 15
+    },
+    {
+      "doc_id": "DOC-007",
+      "chunks_embedded": 4,
+      "facts_stored": 15
+    }
+  ],
+  "chroma_count": 28
+}

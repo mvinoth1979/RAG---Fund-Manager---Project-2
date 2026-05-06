@@ -1,0 +1,18 @@
+{
+  "active_run_id": "2026-05-05T13:00:51.190696+00:00",
+  "previous_run_id": "2026-05-05T13:00:51.190696+00:00",
+  "runs": [
+    {
+      "run_id": "2026-05-05T13:00:51.190696+00:00",
+      "activated_at": "2026-05-05T13:17:21.421126+00:00",
+      "embeddings_hash": "1231c6a031b472baaee13b21c94359ce276542bb3de1f82fad4eb2c87511bec0",
+      "paths": {
+        "embeddings": "data\\4_embeddings",
+        "structured_facts": "data\\5_structured_facts\\facts.db",
+        "chroma_index": "data\\6_chroma_index"
+      }
+    }
+  ],
+  "created_at": "2026-05-05T13:16:29.383773+00:00",
+  "last_swapped_at": "2026-05-05T13:17:21.421126+00:00"
+}

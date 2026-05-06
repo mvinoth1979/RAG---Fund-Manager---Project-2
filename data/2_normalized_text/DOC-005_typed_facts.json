@@ -1,0 +1,93 @@
+{
+  "doc_id": "DOC-005",
+  "source_url": "https://groww.in/mutual-funds/the-wealth-company-gold-etf-fof-direct-growth",
+  "normalized_at": "2026-05-05T12:24:43.428557+00:00",
+  "typed_facts": [
+    {
+      "fact_type": "expense_ratio",
+      "value": "0.22%",
+      "confidence": "HIGH",
+      "normalized": true
+    },
+    {
+      "fact_type": "nav",
+      "value": "₹9.40",
+      "confidence": "HIGH",
+      "normalized": true
+    },
+    {
+      "fact_type": "aum",
+      "value": "₹1112 Cr",
+      "confidence": "HIGH",
+      "normalized": true
+    },
+    {
+      "fact_type": "fund_size_cr",
+      "value": "₹13.19",
+      "confidence": "HIGH",
+      "normalized": true
+    },
+    {
+      "fact_type": "min_sip",
+      "value": "₹250",
+      "confidence": "HIGH",
+      "normalized": true
+    },
+    {
+      "fact_type": "min_lumpsum",
+      "value": "₹5000",
+      "confidence": "HIGH",
+      "normalized": true
+    },
+    {
+      "fact_type": "benchmark",
+      "value": "Domestic Price of Gold",
+      "confidence": "HIGH",
+      "normalized": true
+    },
+    {
+      "fact_type": "fund_house",
+      "value": "The Wealth Company Mutual Fund",
+      "confidence": "HIGH",
+      "normalized": true
+    },
+    {
+      "fact_type": "total_aum",
+      "value": "₹1112.34",
+      "confidence": "HIGH",
+      "normalized": true
+    },
+    {
+      "fact_type": "inception_date",
+      "value": "2025-07-18",
+      "confidence": "MEDIUM",
+      "normalized": true
+    },
+    {
+      "fact_type": "fund_manager",
+      "value": "Niranjan Das",
+      "confidence": "MEDIUM",
+      "normalized": true
+    },
+    {
+      "fact_type": "risk_level",
+      "value": "High",
+      "confidence": "MEDIUM",
+      "normalized": true
+    },
+    {
+      "fact_type": "category",
+      "value": "Commodities Mutual Fund",
+      "confidence": "MEDIUM",
+      "normalized": true
+    },
+    {
+      "fact_type": "investment_objective",
+      "value": "The scheme seeks to generate long-term Capital appreciation from a portfolio created by investing in units of The Wealth Company Gold ETF.",
+      "confidence": "LOW",
+      "normalized": true
+    }
+  ],
+  "rejected_facts": [],
+  "error": null
+}

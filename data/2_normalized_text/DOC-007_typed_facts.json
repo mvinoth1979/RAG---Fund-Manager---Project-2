@@ -1,0 +1,99 @@
+{
+  "doc_id": "DOC-007",
+  "source_url": "https://groww.in/mutual-funds/the-wealth-company-arbitrage-fund-direct-growth",
+  "normalized_at": "2026-05-05T12:24:43.436825+00:00",
+  "typed_facts": [
+    {
+      "fact_type": "expense_ratio",
+      "value": "10.61%",
+      "confidence": "HIGH",
+      "normalized": true
+    },
+    {
+      "fact_type": "nav",
+      "value": "₹10.35",
+      "confidence": "HIGH",
+      "normalized": true
+    },
+    {
+      "fact_type": "aum",
+      "value": "₹1112 Cr",
+      "confidence": "HIGH",
+      "normalized": true
+    },
+    {
+      "fact_type": "fund_size_cr",
+      "value": "₹153.67",
+      "confidence": "HIGH",
+      "normalized": true
+    },
+    {
+      "fact_type": "min_sip",
+      "value": "₹250",
+      "confidence": "HIGH",
+      "normalized": true
+    },
+    {
+      "fact_type": "min_lumpsum",
+      "value": "₹1000",
+      "confidence": "HIGH",
+      "normalized": true
+    },
+    {
+      "fact_type": "exit_load",
+      "value": "Exit load of 0.25%, if redeemed within 7 days",
+      "confidence": "HIGH",
+      "normalized": true
+    },
+    {
+      "fact_type": "benchmark",
+      "value": "NIFTY 50 Arbitrage Total Return Index",
+      "confidence": "HIGH",
+      "normalized": true
+    },
+    {
+      "fact_type": "fund_house",
+      "value": "The Wealth Company Mutual Fund",
+      "confidence": "HIGH",
+      "normalized": true
+    },
+    {
+      "fact_type": "total_aum",
+      "value": "₹1112.34",
+      "confidence": "HIGH",
+      "normalized": true
+    },
+    {
+      "fact_type": "inception_date",
+      "value": "2025-07-18",
+      "confidence": "MEDIUM",
+      "normalized": true
+    },
+    {
+      "fact_type": "fund_manager",
+      "value": "Rouhak Shah",
+      "confidence": "MEDIUM",
+      "normalized": true
+    },
+    {
+      "fact_type": "risk_level",
+      "value": "Low to Moderate",
+      "confidence": "MEDIUM",
+      "normalized": true
+    },
+    {
+      "fact_type": "category",
+      "value": "Hybrid Mutual Fund",
+      "confidence": "MEDIUM",
+      "normalized": true
+    },
+    {
+      "fact_type": "investment_objective",
+      "value": "The schemes seeks to generate income through arbitrage opportunities and debt and money market instruments.",
+      "confidence": "LOW",
+      "normalized": true
+    }
+  ],
+  "rejected_facts": [],
+  "error": null
+}

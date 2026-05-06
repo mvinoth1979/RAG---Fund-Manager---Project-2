@@ -73,8 +73,15 @@ class HybridRetriever:
 
         self.chunks = self._load_chunks(chunks_dir)
         self.chunk_index = {c["chunk_id"]: c for c in self.chunks}
-        tokenized_corpus = [self._tokenize(c["text"]) for c in self.chunks]
-        self.bm25 = BM25Okapi(tokenized_corpus)
+        
+        # Initialize BM25 only if we have chunks
+        if self.chunks:
+            tokenized_corpus = [self._tokenize(c["text"]) for c in self.chunks]
+            self.bm25 = BM25Okapi(tokenized_corpus)
+        else:
+            logger.error("NO CHUNKS LOADED. BM25 will be unavailable.")
+            self.bm25 = None
+            
         self.sqlite_db = sqlite_db
         
         # Use Gemini Cloud Embedder (3072-dim)

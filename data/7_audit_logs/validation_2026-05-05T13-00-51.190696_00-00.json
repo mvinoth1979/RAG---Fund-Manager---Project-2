@@ -1,0 +1,74 @@
+{
+  "run_id": "2026-05-05T13:00:51.190696+00:00",
+  "timestamp": "2026-05-05T13:17:20.236414+00:00",
+  "passed": true,
+  "embeddings_hash": "1231c6a031b472baaee13b21c94359ce276542bb3de1f82fad4eb2c87511bec0",
+  "checks": [
+    {
+      "name": "manifest_schema",
+      "passed": true,
+      "message": "Manifest schema valid",
+      "details": {
+        "run_id": "2026-05-05T13:00:51.190696+00:00",
+        "model": "BAAI/bge-large-en-v1.5",
+        "total_chunks": 28
+      }
+    },
+    {
+      "name": "embeddings_structure",
+      "passed": true,
+      "message": "28 records have required keys",
+      "details": {
+        "record_count": 28
+      }
+    },
+    {
+      "name": "chroma_validation",
+      "passed": true,
+      "message": "Chroma count 28 matches manifest",
+      "details": {
+        "chroma_count": 28
+      }
+    },
+    {
+      "name": "sqlite_validation",
+      "passed": true,
+      "message": "SQLite valid: 104 facts",
+      "details": {
+        "fact_count": 104,
+        "expected_facts": 104
+      }
+    },
+    {
+      "name": "coverage_check",
+      "passed": true,
+      "message": "All 7 docs have chunks and facts",
+      "details": {
+        "docs_in_manifest": 7,
+        "docs_in_embeddings": 7,
+        "docs_in_sqlite": 7
+      }
+    },
+    {
+      "name": "embedding_integrity",
+      "passed": true,
+      "message": "All 28 embeddings valid (dim=1024, L2-norm, no NaN/Inf)",
+      "details": {
+        "dim_ok": 28,
+        "nan_ok": 28,
+        "inf_ok": 28,
+        "norm_ok": 28,
+        "total": 28,
+        "sha256": "1231c6a031b472baaee13b21c94359ce276542bb3de1f82fad4eb2c87511bec0"
+      }
+    }
+  ],
+  "errors": [],
+  "summary": {
+    "total_checks": 6,
+    "passed_checks": 6,
+    "failed_checks": 0,
+    "errors": [],
+    "swap_status": "Swapped 2026-05-05T13:00:51.190696+00:00 -> 2026-05-05T13:00:51.190696+00:00"
+  }
+}

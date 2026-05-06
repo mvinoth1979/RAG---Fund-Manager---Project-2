@@ -1,0 +1,72 @@
+{
+  "run_id": "2026-05-05T12:17:06.747238+00:00",
+  "total_docs": 7,
+  "successful": 7,
+  "fallback_to_raw": 0,
+  "failed": 0,
+  "results": [
+    {
+      "doc_id": "DOC-001",
+      "source_url": "https://groww.in/mutual-funds/the-wealth-company-small-cap-fund-direct-growth",
+      "extraction_success": true,
+      "fallback_to_raw": false,
+      "facts_count": 15,
+      "high_confidence_count": 10,
+      "error": null
+    },
+    {
+      "doc_id": "DOC-002",
+      "source_url": "https://groww.in/mutual-funds/the-wealth-company-ethical-fund-direct-growth",
+      "extraction_success": true,
+      "fallback_to_raw": false,
+      "facts_count": 15,
+      "high_confidence_count": 10,
+      "error": null
+    },
+    {
+      "doc_id": "DOC-003",
+      "source_url": "https://groww.in/mutual-funds/the-wealth-company-multi-asset-allocation-fund-direct-growth",
+      "extraction_success": true,
+      "fallback_to_raw": false,
+      "facts_count": 15,
+      "high_confidence_count": 10,
+      "error": null
+    },
+    {
+      "doc_id": "DOC-004",
+      "source_url": "https://groww.in/mutual-funds/the-wealth-company-flexi-cap-fund-direct-growth",
+      "extraction_success": true,
+      "fallback_to_raw": false,
+      "facts_count": 15,
+      "high_confidence_count": 10,
+      "error": null
+    },
+    {
+      "doc_id": "DOC-005",
+      "source_url": "https://groww.in/mutual-funds/the-wealth-company-gold-etf-fof-direct-growth",
+      "extraction_success": true,
+      "fallback_to_raw": false,
+      "facts_count": 14,
+      "high_confidence_count": 9,
+      "error": null
+    },
+    {
+      "doc_id": "DOC-006",
+      "source_url": "https://groww.in/mutual-funds/the-wealth-company-liquid-fund-direct-growth",
+      "extraction_success": true,
+      "fallback_to_raw": false,
+      "facts_count": 15,
+      "high_confidence_count": 10,
+      "error": null
+    },
+    {
+      "doc_id": "DOC-007",
+      "source_url": "https://groww.in/mutual-funds/the-wealth-company-arbitrage-fund-direct-growth",
+      "extraction_success": true,
+      "fallback_to_raw": false,
+      "facts_count": 15,
+      "high_confidence_count": 10,
+      "error": null
+    }
+  ]
+}

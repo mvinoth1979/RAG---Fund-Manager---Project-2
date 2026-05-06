@@ -1,0 +1,115 @@
+{
+  "doc_id": "DOC-002",
+  "source_url": "https://groww.in/mutual-funds/the-wealth-company-ethical-fund-direct-growth",
+  "extracted_at": "2026-05-05T12:17:06.778990+00:00",
+  "extraction_success": true,
+  "fallback_to_raw": false,
+  "error": null,
+  "facts": [
+    {
+      "fact_type": "expense_ratio",
+      "value": "0.72%",
+      "confidence": "HIGH",
+      "source": "regex",
+      "raw_snippet": "Expense ratio\n0.72%"
+    },
+    {
+      "fact_type": "nav",
+      "value": "₹9.60",
+      "confidence": "HIGH",
+      "source": "regex",
+      "raw_snippet": "Latest NAV as of 04 May 2026 is ₹9.60."
+    },
+    {
+      "fact_type": "aum",
+      "value": "₹1,112 Cr",
+      "confidence": "HIGH",
+      "source": "regex",
+      "raw_snippet": "Asset Under Management(AUM) of ₹1,112 Cr"
+    },
+    {
+      "fact_type": "fund_size_cr",
+      "value": "33.71",
+      "confidence": "HIGH",
+      "source": "regex",
+      "raw_snippet": "Fund size (AUM)\n₹33.71 Cr"
+    },
+    {
+      "fact_type": "min_sip",
+      "value": "₹250",
+      "confidence": "HIGH",
+      "source": "regex",
+      "raw_snippet": "Minimum SIP Investment is set to ₹250."
+    },
+    {
+      "fact_type": "min_lumpsum",
+      "value": "₹1,000",
+      "confidence": "HIGH",
+      "source": "regex",
+      "raw_snippet": "Minimum Lumpsum Investment is ₹1,000."
+    },
+    {
+      "fact_type": "exit_load",
+      "value": "Exit load of 1%, if redeemed within 30 days",
+      "confidence": "HIGH",
+      "source": "regex",
+      "raw_snippet": "Exit load of 1%, if redeemed within 30 days"
+    },
+    {
+      "fact_type": "benchmark",
+      "value": "NIFTY 500 Shariah Total Return Index",
+      "confidence": "HIGH",
+      "source": "regex",
+      "raw_snippet": "Fund benchmark\nNIFTY 500 Shariah Total Return Index\nScheme Information"
+    },
+    {
+      "fact_type": "fund_house",
+      "value": "The Wealth Company Mutual Fund",
+      "confidence": "HIGH",
+      "source": "regex",
+      "raw_snippet": "Fund house\nThe Wealth Company Mutual Fund\nRank (total assets)"
+    },
+    {
+      "fact_type": "total_aum",
+      "value": "1,112.34",
+      "confidence": "HIGH",
+      "source": "regex",
+      "raw_snippet": "Total AUM\n₹1,112.34 Cr"
+    },
+    {
+      "fact_type": "inception_date",
+      "value": "18 Jul 2025",
+      "confidence": "MEDIUM",
+      "source": "regex",
+      "raw_snippet": "available to investors on 18 Jul 2025"
+    },
+    {
+      "fact_type": "fund_manager",
+      "value": "Aparna Shanker",
+      "confidence": "MEDIUM",
+      "source": "regex",
+      "raw_snippet": "Aparna Shanker is the Current Fund Manager"
+    },
+    {
+      "fact_type": "risk_level",
+      "value": "Very High",
+      "confidence": "MEDIUM",
+      "source": "regex",
+      "raw_snippet": "rated Very High risk"
+    },
+    {
+      "fact_type": "category",
+      "value": "Equity Mutual Fund",
+      "confidence": "MEDIUM",
+      "source": "regex",
+      "raw_snippet": "is a Equity Mutual Fund Scheme launched by"
+    },
+    {
+      "fact_type": "investment_objective",
+      "value": "The scheme seeks to provide investors with opportunities for long term growth in capital through an active management principle in a diversified basket of Ethical compliant equity and equity related instruments.",
+      "confidence": "LOW",
+      "source": "heuristic",
+      "raw_snippet": "Investment Objective\nThe scheme seeks to provide investors with opportunities for long term growth in capital through an active management principle in a diversified basket of Ethical compliant equity and equity related instruments."
+    }
+  ]
+}

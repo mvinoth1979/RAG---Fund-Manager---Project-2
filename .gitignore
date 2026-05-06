@@ -8,12 +8,12 @@ ENV/
 env/
 .env
 
-# Database/Storage
-data/
+# Database/Storage (Allowed for production bundle)
+# data/ is now allowed
 chroma_db/
-facts.db
-*.sqlite3
-*.jsonl
+# facts.db is now allowed
+# *.sqlite3
+# *.jsonl
 
 # IDEs
 .vscode/

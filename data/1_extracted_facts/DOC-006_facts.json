@@ -1,0 +1,115 @@
+{
+  "doc_id": "DOC-006",
+  "source_url": "https://groww.in/mutual-funds/the-wealth-company-liquid-fund-direct-growth",
+  "extracted_at": "2026-05-05T12:17:06.905663+00:00",
+  "extraction_success": true,
+  "fallback_to_raw": false,
+  "error": null,
+  "facts": [
+    {
+      "fact_type": "expense_ratio",
+      "value": "0.10%",
+      "confidence": "HIGH",
+      "source": "regex",
+      "raw_snippet": "Expense ratio\n0.10%"
+    },
+    {
+      "fact_type": "nav",
+      "value": "₹1,036.07",
+      "confidence": "HIGH",
+      "source": "regex",
+      "raw_snippet": "Latest NAV as of 04 May 2026 is ₹1,036.07."
+    },
+    {
+      "fact_type": "aum",
+      "value": "₹1,112 Cr",
+      "confidence": "HIGH",
+      "source": "regex",
+      "raw_snippet": "Asset Under Management(AUM) of ₹1,112 Cr"
+    },
+    {
+      "fact_type": "fund_size_cr",
+      "value": "484.05",
+      "confidence": "HIGH",
+      "source": "regex",
+      "raw_snippet": "Fund size (AUM)\n₹484.05 Cr"
+    },
+    {
+      "fact_type": "min_sip",
+      "value": "₹250",
+      "confidence": "HIGH",
+      "source": "regex",
+      "raw_snippet": "Minimum SIP Investment is set to ₹250."
+    },
+    {
+      "fact_type": "min_lumpsum",
+      "value": "₹1,000",
+      "confidence": "HIGH",
+      "source": "regex",
+      "raw_snippet": "Minimum Lumpsum Investment is ₹1,000."
+    },
+    {
+      "fact_type": "exit_load",
+      "value": "Exit load of 0.0070%",
+      "confidence": "HIGH",
+      "source": "regex",
+      "raw_snippet": "Exit load of 0.0070%"
+    },
+    {
+      "fact_type": "benchmark",
+      "value": "NIFTY Liquid Index A-I",
+      "confidence": "HIGH",
+      "source": "regex",
+      "raw_snippet": "Fund benchmark\nNIFTY Liquid Index A-I\nScheme Information"
+    },
+    {
+      "fact_type": "fund_house",
+      "value": "The Wealth Company Mutual Fund",
+      "confidence": "HIGH",
+      "source": "regex",
+      "raw_snippet": "Fund house\nThe Wealth Company Mutual Fund\nRank (total assets)"
+    },
+    {
+      "fact_type": "total_aum",
+      "value": "1,112.34",
+      "confidence": "HIGH",
+      "source": "regex",
+      "raw_snippet": "Total AUM\n₹1,112.34 Cr"
+    },
+    {
+      "fact_type": "inception_date",
+      "value": "18 Jul 2025",
+      "confidence": "MEDIUM",
+      "source": "regex",
+      "raw_snippet": "available to investors on 18 Jul 2025"
+    },
+    {
+      "fact_type": "fund_manager",
+      "value": "Neeraj Jain",
+      "confidence": "MEDIUM",
+      "source": "regex",
+      "raw_snippet": "Neeraj Jain is the Current Fund Manager"
+    },
+    {
+      "fact_type": "risk_level",
+      "value": "Low to Moderate",
+      "confidence": "MEDIUM",
+      "source": "regex",
+      "raw_snippet": "rated Low to Moderate risk"
+    },
+    {
+      "fact_type": "category",
+      "value": "Debt Mutual Fund",
+      "confidence": "MEDIUM",
+      "source": "regex",
+      "raw_snippet": "is a Debt Mutual Fund Scheme launched by"
+    },
+    {
+      "fact_type": "investment_objective",
+      "value": "The scheme seeks to provide opportunity to invest in a portfolio of money market and debt securities having maturity of up to 91 days only.",
+      "confidence": "LOW",
+      "source": "heuristic",
+      "raw_snippet": "Investment Objective\nThe scheme seeks to provide opportunity to invest in a portfolio of money market and debt securities having maturity of up to 91 days only."
+    }
+  ]
+}

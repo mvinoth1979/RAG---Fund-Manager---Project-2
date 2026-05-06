@@ -1,0 +1,99 @@
+{
+  "doc_id": "DOC-001",
+  "source_url": "https://groww.in/mutual-funds/the-wealth-company-small-cap-fund-direct-growth",
+  "normalized_at": "2026-05-05T12:24:43.403191+00:00",
+  "typed_facts": [
+    {
+      "fact_type": "expense_ratio",
+      "value": "2.46%",
+      "confidence": "HIGH",
+      "normalized": true
+    },
+    {
+      "fact_type": "nav",
+      "value": "₹10.92",
+      "confidence": "HIGH",
+      "normalized": true
+    },
+    {
+      "fact_type": "aum",
+      "value": "₹1112 Cr",
+      "confidence": "HIGH",
+      "normalized": true
+    },
+    {
+      "fact_type": "fund_size_cr",
+      "value": "₹38.80",
+      "confidence": "HIGH",
+      "normalized": true
+    },
+    {
+      "fact_type": "min_sip",
+      "value": "₹2000",
+      "confidence": "HIGH",
+      "normalized": true
+    },
+    {
+      "fact_type": "min_lumpsum",
+      "value": "₹10000",
+      "confidence": "HIGH",
+      "normalized": true
+    },
+    {
+      "fact_type": "exit_load",
+      "value": "Exit load of 1%, if redeemed within 1 Year",
+      "confidence": "HIGH",
+      "normalized": true
+    },
+    {
+      "fact_type": "benchmark",
+      "value": "NIFTY Smallcap 250 Total Return Index",
+      "confidence": "HIGH",
+      "normalized": true
+    },
+    {
+      "fact_type": "fund_house",
+      "value": "The Wealth Company Mutual Fund",
+      "confidence": "HIGH",
+      "normalized": true
+    },
+    {
+      "fact_type": "total_aum",
+      "value": "₹1112.34",
+      "confidence": "HIGH",
+      "normalized": true
+    },
+    {
+      "fact_type": "inception_date",
+      "value": "2025-07-18",
+      "confidence": "MEDIUM",
+      "normalized": true
+    },
+    {
+      "fact_type": "fund_manager",
+      "value": "Aparna Shanker",
+      "confidence": "MEDIUM",
+      "normalized": true
+    },
+    {
+      "fact_type": "risk_level",
+      "value": "Very High",
+      "confidence": "MEDIUM",
+      "normalized": true
+    },
+    {
+      "fact_type": "category",
+      "value": "Equity Mutual Fund",
+      "confidence": "MEDIUM",
+      "normalized": true
+    },
+    {
+      "fact_type": "investment_objective",
+      "value": "The schemes seeks to provide long-term capital appreciation / income by investing predominantly in equity and equity related securities of Small Cap companies.",
+      "confidence": "LOW",
+      "normalized": true
+    }
+  ],
+  "rejected_facts": [],
+  "error": null
+}

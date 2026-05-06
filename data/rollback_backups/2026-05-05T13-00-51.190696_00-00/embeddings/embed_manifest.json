@@ -1,0 +1,54 @@
+{
+  "run_id": "2026-05-05T13:00:51.190696+00:00",
+  "model": "BAAI/bge-large-en-v1.5",
+  "expected_dim": 1024,
+  "total_chunks": 28,
+  "embedded": 28,
+  "rejected": 0,
+  "facts_stored": 104,
+  "results": [
+    {
+      "doc_id": "DOC-001",
+      "chunks_embedded": 3,
+      "facts_stored": 15,
+      "error": null
+    },
+    {
+      "doc_id": "DOC-002",
+      "chunks_embedded": 3,
+      "facts_stored": 15,
+      "error": null
+    },
+    {
+      "doc_id": "DOC-003",
+      "chunks_embedded": 7,
+      "facts_stored": 15,
+      "error": null
+    },
+    {
+      "doc_id": "DOC-004",
+      "chunks_embedded": 4,
+      "facts_stored": 15,
+      "error": null
+    },
+    {
+      "doc_id": "DOC-005",
+      "chunks_embedded": 2,
+      "facts_stored": 14,
+      "error": null
+    },
+    {
+      "doc_id": "DOC-006",
+      "chunks_embedded": 5,
+      "facts_stored": 15,
+      "error": null
+    },
+    {
+      "doc_id": "DOC-007",
+      "chunks_embedded": 4,
+      "facts_stored": 15,
+      "error": null
+    }
+  ],
+  "chroma_count": 28
+}

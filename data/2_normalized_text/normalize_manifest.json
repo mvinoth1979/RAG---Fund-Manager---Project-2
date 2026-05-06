@@ -1,0 +1,57 @@
+{
+  "run_id": "2026-05-05T12:24:43.401768+00:00",
+  "total_docs": 7,
+  "successful": 7,
+  "failed": 0,
+  "results": [
+    {
+      "doc_id": "DOC-001",
+      "source_url": "https://groww.in/mutual-funds/the-wealth-company-small-cap-fund-direct-growth",
+      "typed_facts_count": 15,
+      "rejected_count": 0,
+      "error": null
+    },
+    {
+      "doc_id": "DOC-002",
+      "source_url": "https://groww.in/mutual-funds/the-wealth-company-ethical-fund-direct-growth",
+      "typed_facts_count": 15,
+      "rejected_count": 0,
+      "error": null
+    },
+    {
+      "doc_id": "DOC-003",
+      "source_url": "https://groww.in/mutual-funds/the-wealth-company-multi-asset-allocation-fund-direct-growth",
+      "typed_facts_count": 15,
+      "rejected_count": 0,
+      "error": null
+    },
+    {
+      "doc_id": "DOC-004",
+      "source_url": "https://groww.in/mutual-funds/the-wealth-company-flexi-cap-fund-direct-growth",
+      "typed_facts_count": 15,
+      "rejected_count": 0,
+      "error": null
+    },
+    {
+      "doc_id": "DOC-005",
+      "source_url": "https://groww.in/mutual-funds/the-wealth-company-gold-etf-fof-direct-growth",
+      "typed_facts_count": 14,
+      "rejected_count": 0,
+      "error": null
+    },
+    {
+      "doc_id": "DOC-006",
+      "source_url": "https://groww.in/mutual-funds/the-wealth-company-liquid-fund-direct-growth",
+      "typed_facts_count": 15,
+      "rejected_count": 0,
+      "error": null
+    },
+    {
+      "doc_id": "DOC-007",
+      "source_url": "https://groww.in/mutual-funds/the-wealth-company-arbitrage-fund-direct-growth",
+      "typed_facts_count": 15,
+      "rejected_count": 0,
+      "error": null
+    }
+  ]
+}
