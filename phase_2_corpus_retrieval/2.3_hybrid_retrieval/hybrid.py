@@ -56,8 +56,21 @@ class HybridRetriever:
         import chromadb
         from rank_bm25 import BM25Okapi
 
-        self.chroma_client = chromadb.PersistentClient(path=str(chroma_dir))
-        self.collection = self.chroma_client.get_collection("mutual_fund_chunks")
+        # Ensure the directory is absolute and exists
+        self.chroma_dir = Path(chroma_dir).resolve()
+        logger.info(f"Initializing ChromaDB from: {self.chroma_dir}")
+        
+        if not self.chroma_dir.exists():
+            logger.error(f"Chroma directory NOT FOUND at {self.chroma_dir}")
+
+        try:
+            self.chroma_client = chromadb.PersistentClient(path=str(self.chroma_dir))
+            self.collection = self.chroma_client.get_collection("mutual_fund_chunks")
+            logger.info(f"Chroma collection loaded. Count: {self.collection.count()}")
+        except Exception as e:
+            logger.error(f"ChromaDB Initialization Failed: {e}")
+            self.collection = None # Fallback to BM25 only
+
         self.chunks = self._load_chunks(chunks_dir)
         self.chunk_index = {c["chunk_id"]: c for c in self.chunks}
         tokenized_corpus = [self._tokenize(c["text"]) for c in self.chunks]
@@ -67,7 +80,7 @@ class HybridRetriever:
         # Use Gemini Cloud Embedder (3072-dim)
         self.embedder = GeminiEmbedder()
 
-        logger.info(f"Hybrid retriever ready (Gemini {EXPECTED_DIM}-dim). Chunks={len(self.chunks)} Chroma={self.collection.count()}")
+        logger.info(f"Retriever Ready. Chunks={len(self.chunks)} | Chroma={'OK' if self.collection else 'FAILED (using BM25 fallback)'}")
 
     @staticmethod
     def _load_chunks(chunks_dir: Path) -> List[Dict]:
@@ -85,6 +98,9 @@ class HybridRetriever:
         return re.findall(r"\b\w+\b", text.lower())
 
     def _dense_search(self, query: str, doc_ids: List[str]) -> List[Tuple[str, float]]:
+        if not self.collection:
+            return []
+            
         # API call to Gemini for query embedding
         embedding = self.embedder.embed([query])[0]
         embedding = GeminiEmbedder.l2_normalize(embedding)
