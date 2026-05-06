@@ -22,7 +22,9 @@ export function ChatInterface() {
     setIsLoading(true);
 
     try {
-      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000/api/chat';
+      // Use relative path for same-origin requests on Vercel
+      // This bypasses CORS and works on both Production and Preview URLs
+      const apiUrl = '/api/chat';
       const res = await fetch(apiUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
