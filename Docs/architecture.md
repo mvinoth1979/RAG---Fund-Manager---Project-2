@@ -153,7 +153,7 @@ When the scheduler is invoked (Cron or Manual), it executes a sequential pipelin
 #### 2.1 Query Normalization (LLM-Enhanced)
 | Input | Sanitized factual query |
 | Output | Canonical query string |
-| Sub-Phase A: LLM Fuzzy Correction | Uses a fast LLM (Llama 3 8B) to detect and correct typos (e.g., "NVA" -> "NAV", "Smal" -> "Small"). |
+| Sub-Phase A: Schema-Aware LLM Correction | Uses a fast LLM (Llama 3 8B) injected with the **Valid Schema** (Fund Names, Fact Types) to repair letter transpositions (NVA→NAV) and misspellings (Smal→Small) using few-shot guidance. |
 | Sub-Phase B: Rule-based Normalization | Lowercase → punctuation strip → abbreviation expansion (SIP, NAV, AUM) → synonym mapping (`charges` → `expense ratio`) → fund alias canonicalization |
 | Enforcement | Corrected query is passed to Phase 2.2; no learned components in Step B. |
 

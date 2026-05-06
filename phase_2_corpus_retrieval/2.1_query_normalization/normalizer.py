@@ -80,7 +80,7 @@ class QueryNormalizer:
 
     def _llm_fuzzy_correct(self, query: str) -> str:
         """
-        Use LLM to fix typos like NVA -> NAV, Smal -> Small.
+        Use LLM to fix typos with schema-awareness.
         """
         try:
             import importlib.util
@@ -100,19 +100,34 @@ class QueryNormalizer:
 
         client = LLMClient()
         
+        # Schema awareness lists
+        funds = ["Small Cap Fund", "Ethical Fund", "Multi Asset Allocation Fund", "Flexi Cap Fund", "Gold ETF FOF", "Liquid Fund", "Arbitrage Fund"]
+        facts = ["NAV (Net Asset Value)", "AUM (Assets Under Management)", "Expense Ratio (Charges/Fees)", "Exit Load", "Min SIP", "Min Lumpsum", "Benchmark", "Riskometer (Risk Level)", "Fund Manager", "Inception Date (Launch Date)"]
+
         system_prompt = (
-            "You are a typo correction engine for a Mutual Fund FAQ system. "
-            "Fix spelling errors and letter transpositions in the user query. "
-            "Common terms: NAV, SIP, AUM, Small Cap, Ethical, Flexi Cap, Liquid, Gold ETF, Arbitrage. "
-            "Respond ONLY with the corrected query string. Do not add any explanation or preamble."
+            "You are a high-precision typo correction engine for a Mutual Fund FAQ system.\n"
+            "Your goal is to repair user queries containing misspellings, letter transpositions, or ambiguous abbreviations.\n\n"
+            "--- VALID SCHEMA ---\n"
+            f"SUPPORTED FUNDS: {', '.join(funds)}\n"
+            f"SUPPORTED FACTS: {', '.join(facts)}\n\n"
+            "--- CORRECTION RULES ---\n"
+            "1. Fix letter transpositions (e.g., 'NVA' -> 'NAV', 'NSV' -> 'NAV').\n"
+            "2. Fix phonetic misspellings (e.g., 'Smal' -> 'Small', 'Flexicp' -> 'Flexi Cap').\n"
+            "3. Map synonyms to canonical terms (e.g., 'cost' -> 'expense ratio', 'started on' -> 'inception date').\n"
+            "4. Preserve the overall intent of the question.\n"
+            "5. If no correction is needed, return the original query exactly.\n"
+            "6. Respond ONLY with the corrected query string. No preamble, no explanation.\n\n"
+            "--- EXAMPLES ---\n"
+            "Input: 'What is the nva of smal cap?' -> Output: 'What is the NAV of Small Cap Fund?'\n"
+            "Input: 'expnse for flexicp' -> Output: 'expense ratio for Flexi Cap Fund'\n"
+            "Input: 'min sip for liquid' -> Output: 'min SIP for Liquid Fund'\n"
+            "Input: 'Who is the manager for ethical?' -> Output: 'Who is the fund manager for Ethical Fund?'"
         )
         
         try:
-            # Use a fast model for correction
             corrected, _ = client.generate(system_prompt, query)
-            return corrected.strip()
+            return corrected.strip().strip("'\"") # Remove quotes if LLM adds them
         except Exception as e:
-            # If LLM fails, return original query (graceful degradation)
             return query
 
     def normalize(self, query: str) -> NormalizedQuery:
