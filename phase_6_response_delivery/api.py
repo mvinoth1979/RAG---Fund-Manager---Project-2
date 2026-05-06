@@ -63,13 +63,7 @@ generation_pipeline = ResponseGenerator()
 banned_phrases_path = str(PROJECT_ROOT / "phase_5_compliance_validation" / "5.1_advisory_detection" / "banned_phrases.json")
 compliance_pipeline = CompliancePipeline(banned_phrases_path=banned_phrases_path)
 
-@app.get("/")
-async def root():
-    return {
-        "status": "online",
-        "message": "Mutual Fund RAG Assistant API is running.",
-        "endpoints": ["/api/chat (POST)"]
-    }
+# Root route removed to prevent conflict with React frontend
 
 @app.post("/api/chat", response_model=ChatResponse)
 async def chat_endpoint(request: QueryRequest):

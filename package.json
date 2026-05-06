@@ -1,6 +1,6 @@
 {
   "private": true,
   "scripts": {
-    "build": "cd phase_7_frontend && npm install && npm run build"
+    "build": "cd phase_7_frontend && npm install && npm run build && cp -r dist ../public"
   }
 }
