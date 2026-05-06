@@ -22,6 +22,8 @@ export function InputArea({ onSend, disabled }: InputAreaProps) {
     <div className="p-4 bg-white border-t border-gray-200 shrink-0">
       <form onSubmit={handleSubmit} className="max-w-4xl mx-auto relative flex items-center">
         <input
+          id="query-input"
+          name="query"
           type="text"
           value={input}
           onChange={(e) => setInput(e.target.value.slice(0, 200))}
