@@ -116,14 +116,26 @@ class EntityResolver:
                 break
 
         has_comparison = any(word in text for word in self.COMPARISON_WORDS)
-        is_ambiguous = len(mentioned_funds) > 1 and has_comparison
+        
+        # Ambiguity Case 1: Multiple funds with comparison
+        is_ambiguous_comparison = len(mentioned_funds) > 1 and has_comparison
+        
+        # Ambiguity Case 2: Fact requested but no fund mentioned
+        is_missing_fund = fact_type is not None and len(mentioned_funds) == 0
+        
+        is_ambiguous = is_ambiguous_comparison or is_missing_fund
 
         advisory_trigger = is_ambiguous
         advisory_reason = ""
-        if is_ambiguous:
+        if is_ambiguous_comparison:
             advisory_reason = (
                 "Multiple fund mentions with explicit comparison detected. "
                 "Advisory refusal triggered per architecture enforcement."
+            )
+        elif is_missing_fund:
+            advisory_reason = (
+                f"The query asks for '{fact_type}' but does not specify a mutual fund. "
+                "Ambiguous query handling triggered."
             )
 
         return ResolvedQuery(
