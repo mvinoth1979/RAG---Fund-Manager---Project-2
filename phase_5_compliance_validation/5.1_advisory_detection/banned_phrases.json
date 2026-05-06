@@ -1,0 +1,41 @@
+{
+  "prescriptive": [
+    "you should",
+    "you must",
+    "i recommend",
+    "it is advised",
+    "your best option"
+  ],
+  "comparative": [
+    "better than",
+    "worse than",
+    "superior to",
+    "inferior to",
+    "beats the"
+  ],
+  "evaluative": [
+    "good investment",
+    "bad investment",
+    "too risky",
+    "safe bet"
+  ],
+  "predictive": [
+    "will go up",
+    "will go down",
+    "guaranteed returns",
+    "expected to grow",
+    "future performance"
+  ],
+  "action_oriented": [
+    "buy now",
+    "sell immediately",
+    "invest today",
+    "don't invest"
+  ],
+  "recommendation": [
+    "my advice",
+    "highly recommended",
+    "top pick",
+    "best fund"
+  ]
+}
