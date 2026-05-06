@@ -11,7 +11,10 @@ Enforcement:
 """
 
 import sys
+import logging
 from pathlib import Path
+
+logger = logging.getLogger(__name__)
 
 # Add project root to path so sub-phase scripts can be found
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
@@ -78,9 +81,27 @@ def run_phase_1(query: str):
         return result
 
     # ------------------------------------------------------------------
+    # 1.1b LLM Fuzzy Correction (Pre-Classification)
+    # ------------------------------------------------------------------
+    # Load normalizer to use the schema-aware correction
+    try:
+        norm_mod = _load_module(PROJECT_ROOT / "phase_2_corpus_retrieval" / "2.1_query_normalization" / "normalizer.py")
+        normalizer = norm_mod.QueryNormalizer()
+        corrected = normalizer._llm_fuzzy_correct(pii_result.query)
+        if corrected != pii_result.query:
+            logger.info(f"Fuzzy Repair: '{pii_result.query}' -> '{corrected}'")
+            query_to_classify = corrected
+            result["sanitized_query"] = corrected # Update sanitized query with repaired version
+        else:
+            query_to_classify = pii_result.query
+    except Exception as e:
+        logger.error(f"Fuzzy correction failed: {e}")
+        query_to_classify = pii_result.query
+
+    # ------------------------------------------------------------------
     # 1.2 Intent Classification
     # ------------------------------------------------------------------
-    intent_result = run_intent_gate(pii_result.query)
+    intent_result = run_intent_gate(query_to_classify)
     result["intent"] = {
         "classification": intent_result.classification,
         "advisory_score": intent_result.advisory_score,
