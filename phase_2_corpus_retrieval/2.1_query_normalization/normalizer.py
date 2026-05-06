@@ -78,12 +78,54 @@ class QueryNormalizer:
         # Sort by length descending for greedy matching
         return sorted(combined.items(), key=lambda x: len(x[0]), reverse=True)
 
+    def _llm_fuzzy_correct(self, query: str) -> str:
+        """
+        Use LLM to fix typos like NVA -> NAV, Smal -> Small.
+        """
+        try:
+            import importlib.util
+            import sys
+            from pathlib import Path
+            PROJECT_ROOT = Path(__file__).resolve().parents[2]
+            llm_path = PROJECT_ROOT / "phase_4_response_generation" / "4.2_llm_inference" / "llm.py"
+            
+            spec = importlib.util.spec_from_file_location("llm_module", llm_path)
+            llm_mod = importlib.util.module_from_spec(spec)
+            sys.modules["llm_module"] = llm_mod
+            spec.loader.exec_module(llm_mod)
+            LLMClient = llm_mod.LLMClient
+        except Exception as e:
+            logger.error(f"Failed to load LLMClient: {e}")
+            return query
+
+        client = LLMClient()
+        
+        system_prompt = (
+            "You are a typo correction engine for a Mutual Fund FAQ system. "
+            "Fix spelling errors and letter transpositions in the user query. "
+            "Common terms: NAV, SIP, AUM, Small Cap, Ethical, Flexi Cap, Liquid, Gold ETF, Arbitrage. "
+            "Respond ONLY with the corrected query string. Do not add any explanation or preamble."
+        )
+        
+        try:
+            # Use a fast model for correction
+            corrected, _ = client.generate(system_prompt, query)
+            return corrected.strip()
+        except Exception as e:
+            # If LLM fails, return original query (graceful degradation)
+            return query
+
     def normalize(self, query: str) -> NormalizedQuery:
         original = query.strip()
         transformations: list[str] = []
 
-        # 1. Lowercase
-        text = original.lower()
+        # 1. LLM Fuzzy Correction (New)
+        corrected = self._llm_fuzzy_correct(original)
+        if corrected != original:
+            transformations.append(f"Fuzzy Correction: {original} -> {corrected}")
+            text = corrected.lower()
+        else:
+            text = original.lower()
 
         # 2. Strip punctuation (replace with spaces)
         text = re.sub(r"[^\w\s]", " ", text)

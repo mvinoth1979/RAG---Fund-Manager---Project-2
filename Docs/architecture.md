@@ -150,11 +150,12 @@ When the scheduler is invoked (Cron or Manual), it executes a sequential pipelin
 
 ### Phase 2: Corpus Retrieval
 
-#### 2.1 Query Normalization
+#### 2.1 Query Normalization (LLM-Enhanced)
 | Input | Sanitized factual query |
 | Output | Canonical query string |
-| Logic | Lowercase → punctuation strip → abbreviation expansion (SIP, NAV, AUM) → synonym mapping (`charges` → `expense ratio`) → fund alias canonicalization |
-| Enforcement | Fixed dictionary; no learned components |
+| Sub-Phase A: LLM Fuzzy Correction | Uses a fast LLM (Llama 3 8B) to detect and correct typos (e.g., "NVA" -> "NAV", "Smal" -> "Small"). |
+| Sub-Phase B: Rule-based Normalization | Lowercase → punctuation strip → abbreviation expansion (SIP, NAV, AUM) → synonym mapping (`charges` → `expense ratio`) → fund alias canonicalization |
+| Enforcement | Corrected query is passed to Phase 2.2; no learned components in Step B. |
 
 #### 2.2 Entity / Scheme Resolution
 | Input | Normalized query |
