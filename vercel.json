@@ -1,16 +1,25 @@
 {
-  "routes": [
+  "builds": [
     {
-      "src": "/api/chat",
-      "dest": "backend/main.py"
+      "src": "api/main.py",
+      "use": "@vercel/python"
     },
     {
-      "src": "/",
-      "dest": "/public/index.html"
+      "src": "phase_7_frontend/package.json",
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "dist"
+      }
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/api/chat",
+      "destination": "api/main.py"
     },
     {
-      "src": "/(.*)",
-      "dest": "/public/$1"
+      "source": "/(.*)",
+      "destination": "phase_7_frontend/$1"
     }
   ]
 }
