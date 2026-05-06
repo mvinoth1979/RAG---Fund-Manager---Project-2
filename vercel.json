@@ -1,17 +1,9 @@
 {
-  "builds": [
-    {
-      "src": "api/index.py",
-      "use": "@vercel/python"
-    },
-    {
-      "src": "phase_7_frontend/package.json",
-      "use": "@vercel/static-build",
-      "config": {
-        "distDir": "dist"
-      }
+  "functions": {
+    "api/*.py": {
+      "runtime": "@vercel/python"
     }
-  ],
+  },
   "rewrites": [
     {
       "source": "/api/(.*)",
@@ -19,7 +11,7 @@
     },
     {
       "source": "/(.*)",
-      "destination": "phase_7_frontend/$1"
+      "destination": "/phase_7_frontend/$1"
     }
   ],
   "headers": [
