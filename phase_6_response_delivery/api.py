@@ -131,9 +131,11 @@ async def chat_endpoint(request: QueryRequest):
         )
     except Exception as e:
         import traceback
+        tb = traceback.format_exc()
         error_msg = f"API Error: {str(e)}"
-        logger.error(f"{error_msg}\n{traceback.format_exc()}")
-        raise HTTPException(status_code=500, detail=error_msg)
+        logger.error(f"{error_msg}\n{tb}")
+        # Return the traceback in the detail so we can see the line number in the browser
+        raise HTTPException(status_code=500, detail={"error": error_msg, "traceback": tb})
 
 if __name__ == "__main__":
     import uvicorn
