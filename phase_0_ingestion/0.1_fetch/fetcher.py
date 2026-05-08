@@ -55,16 +55,33 @@ FETCH_USER_AGENT = os.getenv(
 DATA_RAW_HTML = Path(os.getenv("DATA_RAW_HTML", "./data/0_raw_html"))
 ETAG_CACHE_FILE = DATA_RAW_HTML / "etag_cache.json"
 
-# Immutable 7-URL whitelist (DOC-001 through DOC-007)
-WHITELISTED_URLS: List[str] = [
-    "https://groww.in/mutual-funds/the-wealth-company-small-cap-fund-direct-growth",
-    "https://groww.in/mutual-funds/the-wealth-company-ethical-fund-direct-growth",
-    "https://groww.in/mutual-funds/the-wealth-company-multi-asset-allocation-fund-direct-growth",
-    "https://groww.in/mutual-funds/the-wealth-company-flexi-cap-fund-direct-growth",
-    "https://groww.in/mutual-funds/the-wealth-company-gold-etf-fof-direct-growth",
-    "https://groww.in/mutual-funds/the-wealth-company-liquid-fund-direct-growth",
-    "https://groww.in/mutual-funds/the-wealth-company-arbitrage-fund-direct-growth",
-]
+CONFIG_FILE = Path(os.getenv("CONFIG_FILE", "./data/config.json"))
+
+def load_whitelisted_urls() -> List[str]:
+    """Load URLs from config.json or use fallback defaults."""
+    if CONFIG_FILE.exists():
+        try:
+            with open(CONFIG_FILE, "r", encoding="utf-8") as f:
+                config = json.load(f)
+                urls = config.get("fund_urls", [])
+                if urls:
+                    return urls
+        except Exception as exc:
+            logger.warning(f"Failed to load config file: {exc}")
+    
+    # Fallback default URLs
+    return [
+        "https://groww.in/mutual-funds/the-wealth-company-small-cap-fund-direct-growth",
+        "https://groww.in/mutual-funds/the-wealth-company-ethical-fund-direct-growth",
+        "https://groww.in/mutual-funds/the-wealth-company-multi-asset-allocation-fund-direct-growth",
+        "https://groww.in/mutual-funds/the-wealth-company-flexi-cap-fund-direct-growth",
+        "https://groww.in/mutual-funds/the-wealth-company-gold-etf-fof-direct-growth",
+        "https://groww.in/mutual-funds/the-wealth-company-liquid-fund-direct-growth",
+        "https://groww.in/mutual-funds/the-wealth-company-arbitrage-fund-direct-growth",
+    ]
+
+# Whitelist (DOC-001 through DOC-007)
+WHITELISTED_URLS: List[str] = load_whitelisted_urls()
 
 # =============================================================================
 # Logging

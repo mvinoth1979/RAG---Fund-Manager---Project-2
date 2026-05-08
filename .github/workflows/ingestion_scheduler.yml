@@ -1,6 +1,9 @@
 name: Daily Mutual Fund Ingestion & Deployment
 
 on:
+  push:
+    branches:
+      - main
   schedule:
     - cron: '30 4 * * *'  # 10:00 AM IST
   workflow_dispatch:      # Manual trigger

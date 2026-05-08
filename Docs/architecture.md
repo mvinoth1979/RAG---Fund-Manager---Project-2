@@ -25,9 +25,9 @@
 
 | Layer | Technology | Justification |
 |-------|-----------|---------------|
-| **Frontend** | React 18 + TypeScript + Tailwind CSS | Lightweight, type-safe, responsive |
-| **API Gateway** | FastAPI (Python) | Async-native, OpenAPI auto-generation, Pydantic validation |
-| **Orchestration** | Python 3.11 + Pydantic models | Deterministic state machine, strict typing |
+| **Frontend** | React 18 + TypeScript + Tailwind | Deployed on **Vercel** for high availability and global edge delivery |
+| **API/Backend** | **Streamlit** + FastAPI | Streamlit for orchestration and admin dashboard; FastAPI for REST endpoints |
+| **Orchestration** | Python 3.11 + Pydantic models | Streamlit-driven deterministic state machine |
 | **Embedding Model** | `BAAI/bge-large-en-v1.5` (1024-dim) | Higher quality semantic representations for factual retrieval |
 | **Chunking Strategy** | Semantic (fact-type-driven) | Split at sentence boundaries; self-contained; max 300 tokens |
 | **Cross-Encoder** | `cross-encoder/ms-marco-MiniLM-L-6-v2` | Lightweight reranking |
@@ -52,9 +52,9 @@
 Runs daily or upon manual trigger to ensure the corpus is synchronized with the latest fund data from Groww.
 
 #### 0.0.1 Trigger Logic
-- **Primary**: GitHub Actions Cron Schedule (`30 4 * * *`) — equivalent to **10:00 AM IST**.
-- **Secondary**: `workflow_dispatch` (Manual) — Allows developers to trigger an immediate refresh.
-- **Failover**: `on: push` (limited to `data/config.json`) — Triggers refresh when fund URLs are updated.
+- **Primary (Automatic)**: GitHub Actions `on: push` (main branch) — Triggers an immediate refresh and deployment on every code update.
+- **Scheduled**: Cron Schedule (`30 4 * * *`) — Ensures a full synchronization every day at **10:00 AM IST**.
+- **Manual**: `workflow_dispatch` — Allows developers to trigger an immediate refresh via the GitHub UI.
 
 #### 0.0.2 Full-Stack Execution Workflow
 When the scheduler is invoked (Cron or Manual), it executes a sequential pipeline covering all phases:
