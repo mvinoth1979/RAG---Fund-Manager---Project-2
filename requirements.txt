@@ -1,6 +1,6 @@
-fastapi==0.104.1
-uvicorn==0.24.0
-pydantic==2.13.3
+fastapi
+uvicorn
+pydantic
 pydantic-settings
 python-dotenv
 chromadb
@@ -14,4 +14,4 @@ pandas
 jinja2
 python-multipart
 rank_bm25
-streamlit==1.28.2
+streamlit
